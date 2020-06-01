@@ -21,6 +21,16 @@ public class UserController {
     @Autowired
     private UserValidator userValidator;
 
+    @GetMapping("/makeadmin")
+    @ResponseBody
+    public String registration() {
+        User user = new User();
+        user.setUsername("admin00");
+        user.setPassword("admin00");
+        userService.save(user);
+        return "OK";
+    }
+    /*
     @GetMapping("/registration")
     public String registration(Model model) {
         model.addAttribute("userForm", new User());
@@ -42,6 +52,7 @@ public class UserController {
 
         return "redirect:/welcome";
     }
+     */
 
     @GetMapping("/login")
     public String login(Model model, String error, String logout) {
