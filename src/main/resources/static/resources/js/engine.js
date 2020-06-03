@@ -11,46 +11,23 @@ var app = new Vue({
         fieldType: null,
         fieldLabel: null,
         fieldOptions: "",
-        fields: [
-            // PRZYKLAD FORMULARZA
-            // =======================================================
-            // {
-            //     "type": "text",
-            //     "label": "Pole testowe",
-            //     "name": "pole1"
-            // },
-            // {
-            //     "type": "checkbox",
-            //     "label": "Czy wyrażasz zgodę na sprzedaż swoich danych?",
-            //     "name": "pole1"
-            // },
-            // {
-            //     "type": "text",
-            //     "label": "Pole checkox",
-            //     "name": "pole2"
-            // },
-            // {
-            //     "type": "radio",
-            //     "label": "Pole radio",
-            //     "name": "pole3",
-            //     "options": [
-            //         "opcja1",
-            //         "opcja2",
-            //         "opcja3"
-            //     ]
-            // }
-        ]
+        selectedSurveyField: "",
+        surveyFieldSelect: "",
+        surveyFieldOperator: "",
+        surveyFieldValue: [],
+        fields: []
     },
     methods: {
         onSubmit() {
             let newField = {
                 "type": this.fieldType,
                 "label": this.fieldLabel,
-                "name": "pole" + new Date().valueOf()
+                "name": "pole" + new Date().valueOf(),
+                "value": []
             };
 
             if (this.fieldOptions !== "") {
-                newField.options = this.fieldOptions.split('\n');
+                newField.options = this.fieldOptions.split('\n').filter(x => x);
             }
 
             this.fields.push(newField);
@@ -58,6 +35,17 @@ var app = new Vue({
             this.fieldLabel = null;
             this.issaved = true;
             $('#addField').modal('hide');
+        },
+        onSubmitLogic() {
+            if (!this.fields[this.selectedSurveyField]["visibleif"]) {
+                this.fields[this.selectedSurveyField]["visibleif"] = "";
+            }
+            this.fields[this.selectedSurveyField]["visibleif"] = this.surveyFieldSelect + " " + this.surveyFieldOperator + " " + this.surveyFieldValue.toString();
+            this.selectedSurveyField = "";
+            this.surveyFieldSelect = "";
+            this.surveyFieldOperator = "";
+            this.surveyFieldValue = [];
+            $('#addLogic').modal('hide');
         },
         deleteElement(id) {
             this.fields.splice(id, 1);
@@ -104,18 +92,22 @@ var app = new Vue({
 
             })
         },
-        showMessage(status, title, message, callback = () => {}) {
+        showMessage(status, title, message, callback = () => {
+        }) {
             Swal.fire({
                 icon: status,
                 title: title,
                 text: message,
                 confirmButtonText: 'Oki doki!'
             }).then((result) => callback());
-        }
+        },
     },
     watch: {
         fieldType: function () {
             this.fieldOptions = "";
+        },
+        surveyFieldSelect: function () {
+            this.surveyFieldValue = [];
         }
     },
     mounted() {
