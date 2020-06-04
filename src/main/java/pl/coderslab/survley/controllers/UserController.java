@@ -21,15 +21,6 @@ public class UserController {
     @Autowired
     private UserValidator userValidator;
 
-    @GetMapping("/makeadmin")
-    @ResponseBody
-    public String registration() {
-        User user = new User();
-        user.setUsername("admin00");
-        user.setPassword("admin00");
-        userService.save(user);
-        return "OK";
-    }
     /*
     @GetMapping("/registration")
     public String registration(Model model) {
