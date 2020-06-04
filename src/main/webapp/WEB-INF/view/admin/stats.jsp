@@ -21,22 +21,30 @@
                     <table class="table">
                         <thead class="thead-dark">
                         <tr>
-                            <c:forEach var="answers" items="${results}" begin="${biggest}" end="${biggest}">
-                                <c:forEach var="answer" items="${answers}">
-                                        <th scope="row"><c:out value="${answer[0]}"/></th>
-                                </c:forEach>
+                            <c:forEach var="headerColumn" items="${tableHeader}">
+                                <th scope="row"><c:out value="${headerColumn}"/></th>
                             </c:forEach>
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach var="i" items="${ids}">
+                        <c:forEach var="id" items="${ids}">
                             <tr>
-                                <c:forEach var="answers" items="${results}">
-                                    <c:forEach var="answer" items="${answers}">
-                                        <c:if test="${answer[2] == i}">
-                                            <th scope="row"><c:out value="${answer[1]}"/></th>
+                                <c:forEach var="headerColumn" items="${tableHeader}">
+
+                                    <th scope="row">
+
+                                    <c:forEach var="surveyField" items="${allSurveyFields}">
+
+                                        <c:if test="${surveyField.getFields_group() == id}">
+
+                                            <c:if test="${surveyField.getName() == headerColumn}"><c:out value="${surveyField.getValue()}"/></c:if>
+
                                         </c:if>
+
                                     </c:forEach>
+
+                                    </th>
+
                                 </c:forEach>
                             </tr>
                         </c:forEach>

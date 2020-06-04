@@ -65,6 +65,18 @@
 </div>
 
 
+<div class="bg-primary">
+    <div class="container-fluid p-0">
+        <div class="row no-gutters">
+            <div class="col p-3 text-white opis-produktu">
+                <h1>Możliwość tworzenia logiki wyświetlania pól</h1>
+            </div>
+            <div class="col bg-dark"><img class="img-fluid  float-right" src="/resources/img/screen3.png" alt=""></div>
+        </div>
+    </div>
+</div>
+
+
 <style>
     .opis-produktu {
         align-items: center;
