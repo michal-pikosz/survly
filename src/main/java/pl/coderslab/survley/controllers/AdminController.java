@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.coderslab.survley.Service.SecurityService;
 import pl.coderslab.survley.Service.UserService;
+import pl.coderslab.survley.entites.SurveyFields;
 import pl.coderslab.survley.entites.User;
+import pl.coderslab.survley.repository.SurveyFieldsRepository;
 import pl.coderslab.survley.repository.SurveyRepository;
 import pl.coderslab.survley.dao.SurveyDao;
 import pl.coderslab.survley.entites.Survey;
@@ -25,6 +27,8 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -32,6 +36,7 @@ public class AdminController {
     private final SurveyDao surveyDao;
     private final SurveyRepository surveyRepository;
     private final UserRepository userRepository;
+    private final SurveyFieldsRepository surveyFieldsRepository;
 
     @Autowired
     private UserService userService;
@@ -42,10 +47,11 @@ public class AdminController {
     @Autowired
     private UserValidator userValidator;
 
-    public AdminController(SurveyDao surveyDao, SurveyRepository surveyRepository, UserRepository userRepository) {
+    public AdminController(SurveyDao surveyDao, SurveyRepository surveyRepository, UserRepository userRepository, SurveyFieldsRepository surveyFieldsRepository) {
         this.surveyDao = surveyDao;
         this.surveyRepository = surveyRepository;
         this.userRepository = userRepository;
+        this.surveyFieldsRepository = surveyFieldsRepository;
     }
 
     @GetMapping("/survey")
@@ -109,25 +115,20 @@ public class AdminController {
 
     @GetMapping("/survey/{id}/results")
     public String surveyViewResults(@PathVariable Long id, Model model) {
+
         List<BigInteger> ids = surveyDao.getResultsIds(id);
+        List<SurveyFields> allSurveyFields = surveyFieldsRepository.findAll();
 
-        List<List<Object[]>> resultValues = new ArrayList<>();
+        List<String> tableHeader = allSurveyFields.stream()
+                .map(SurveyFields::getName)
+                .distinct()
+                .collect(toList());
 
-        Integer inkr = 0;
-        Integer biggest = 0;
-        for (BigInteger fieldSetId : ids) {
-            List<Object[]> databaseRow = surveyDao.getResultValues(fieldSetId);
-            if (databaseRow.size() > biggest) {
-                biggest = inkr;
-            }
-            resultValues.add(databaseRow);
-            inkr++;
-        }
 
-        // resultValues.forEach(o -> o.forEach(a -> System.out.println(a[0])));
-        model.addAttribute("biggest", biggest);
+
         model.addAttribute("ids", ids);
-        model.addAttribute("results", resultValues);
+        model.addAttribute("tableHeader", tableHeader);
+        model.addAttribute("allSurveyFields", allSurveyFields);
         return "admin/stats";
     }
 
