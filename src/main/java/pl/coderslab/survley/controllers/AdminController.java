@@ -117,7 +117,7 @@ public class AdminController {
     public String surveyViewResults(@PathVariable Long id, Model model) {
 
         List<BigInteger> ids = surveyDao.getResultsIds(id);
-        List<SurveyFields> allSurveyFields = surveyFieldsRepository.findAll();
+        List<SurveyFields> allSurveyFields = surveyFieldsRepository.findAllByWhereId(id);
 
         List<String> tableHeader = allSurveyFields.stream()
                 .map(SurveyFields::getName)
