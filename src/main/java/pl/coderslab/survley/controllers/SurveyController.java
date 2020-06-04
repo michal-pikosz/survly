@@ -4,10 +4,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.survley.Service.SurveyService;
+import pl.coderslab.survley.Service.UserService;
 import pl.coderslab.survley.dao.SurveyDao;
 import pl.coderslab.survley.dao.SurveyFieldsDao;
 import pl.coderslab.survley.entites.Survey;
 import pl.coderslab.survley.entites.SurveyFields;
+import pl.coderslab.survley.entites.User;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
@@ -19,11 +21,13 @@ public class SurveyController {
     private final SurveyService surveyService;
     private final SurveyDao surveyDao;
     private final SurveyFieldsDao surveyFieldsDao;
+    private final UserService userService;
 
-    public SurveyController(SurveyService surveyService, SurveyDao surveyDao, SurveyFieldsDao surveyFieldsDao) {
+    public SurveyController(SurveyService surveyService, SurveyDao surveyDao, SurveyFieldsDao surveyFieldsDao, UserService userService) {
         this.surveyService = surveyService;
         this.surveyDao = surveyDao;
         this.surveyFieldsDao = surveyFieldsDao;
+        this.userService = userService;
     }
 
     @GetMapping("/survey/{id}")
@@ -45,43 +49,28 @@ public class SurveyController {
         while (e.hasMoreElements()) {
 
             String name = (String) e.nextElement();
-            SurveyFields surveyFields = new SurveyFields();
-            surveyFields.setName(name);
-            surveyFields.setValue(request.getParameter(name));
-            surveyFields.setFields_group(lastId);
-            surveyFields.setSurvey_id(Long.parseLong(id));
-            surveyFieldsDao.add(surveyFields);
+
+            if (!name.equals("_csrf")) {
+                SurveyFields surveyFields = new SurveyFields();
+                surveyFields.setName(name);
+                surveyFields.setValue(request.getParameter(name));
+                surveyFields.setFields_group(lastId);
+                surveyFields.setSurvey_id(Long.parseLong(id));
+                surveyFieldsDao.add(surveyFields);
+            }
 
         }
 
         return "thankyoupage";
     }
 
-    @PostMapping("/save")
+    @GetMapping("/makeadmin")
     @ResponseBody
-    public String saveForm(@RequestParam("form") String form) {
-        long lastId = surveyFieldsDao.findLastGroupId() + 1;
-        // Convert JSON to an object that can be saved to the database
-        List<SurveyFields> formAnswers = surveyService.parseJsonRequest(form, lastId);
-        // Saving results to the database
-        for (SurveyFields answer : formAnswers) {
-            surveyFieldsDao.add(answer);
-        }
-        return "BARDZO DOBRA ROBOTA!";
-    }
-
-    @GetMapping("/new")
-    public String newForm() {
-        return "new";
-    }
-
-    @GetMapping("/test")
-    public String test() {
-        return "index";
-    }
-
-    @GetMapping("/tagtest")
-    public String tagtest() {
-        return "adminindex";
+    public String registration() {
+        User user = new User();
+        user.setUsername("admin00");
+        user.setPassword("admin00");
+        userService.save(user);
+        return "OK";
     }
 }

@@ -35,20 +35,28 @@ public class SurveyService {
             // Capture the JSON object key
             Object key = iterator.next(); // Iterate
 
-            Object value = null;
-            try {
-                value = jsonObject.get(key.toString());
-            } catch (JSONException e) {
-                e.printStackTrace();
+            System.out.println(key.toString());
+
+            if(!key.toString().equals("_csrf")) {
+
+                Object value = null;
+                try {
+                    value = jsonObject.get(key.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                SurveyFields surveyFields = new SurveyFields();
+                surveyFields.setName(key.toString());
+                surveyFields.setValue(value != null ? value.toString() : null);
+                surveyFields.setFields_group(formNumber);
+                surveyFields.setSurvey_id(Long.parseLong("1"));
+
+                formAnswers.add(surveyFields);
+
             }
 
-            SurveyFields surveyFields = new SurveyFields();
-            surveyFields.setName(key.toString());
-            surveyFields.setValue(value != null ? value.toString() : null);
-            surveyFields.setFields_group(formNumber);
-            surveyFields.setSurvey_id(Long.parseLong("1"));
 
-            formAnswers.add(surveyFields);
         }
 
         return formAnswers;

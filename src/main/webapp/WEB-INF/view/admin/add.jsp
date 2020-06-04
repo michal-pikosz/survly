@@ -79,8 +79,8 @@
                                         <small id="radioOptions" class="form-text text-muted">Jedna opcja na linię (Shift + enter)</small>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                                        <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
                                     </div>
                                 </form>
                             </div>
@@ -93,7 +93,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="addLogicLabel">Dodajesz logikę do pola {{selectedSurveyField}}</h5>
+                                <h5 class="modal-title" id="addLogicLabel" v-if="fields.length > 0 && selectedSurveyField !== ''">Dodajesz logikę do pola {{fields[selectedSurveyField].label}}</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -147,8 +147,8 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" v-on:click="onSubmitLogic()" class="btn btn-primary">Save changes</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                                        <button type="submit" v-on:click="onSubmitLogic()" class="btn btn-primary">Zapisz zmiany</button>
                                     </div>
                                 </form>
                             </div>
