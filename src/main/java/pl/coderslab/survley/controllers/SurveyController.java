@@ -1,8 +1,13 @@
 package pl.coderslab.survley.controllers;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.server.ResponseStatusException;
 import pl.coderslab.survley.Service.SurveyService;
 import pl.coderslab.survley.Service.UserService;
 import pl.coderslab.survley.dao.SurveyDao;
@@ -13,7 +18,6 @@ import pl.coderslab.survley.entites.User;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
-import java.util.List;
 
 @Controller
 public class SurveyController {
@@ -34,7 +38,9 @@ public class SurveyController {
     public String showSurvey(@PathVariable Long id, Model model) {
         Survey survey = surveyDao.find(id);
         if (survey == null) {
-            return "redirect:" + "/404";
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "entity not found"
+            );
         }
         model.addAttribute("survey", survey);
         return "show";

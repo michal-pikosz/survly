@@ -21,7 +21,7 @@
                     <button type="button" class="close" aria-label="Close" v-on:click="deleteElement(index)">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <span v-if="field.visibleif" class="badge badge-secondary">Istnieje logika: {{field.visibleif}}</span> <button v-on:click="selectedSurveyField = index" type="button" class="btn btn-info" data-toggle="modal" data-target="#addLogic" style="float: right;z-index: 99;position: relative;">Dodaj logikę do pola</button>
+                    <span v-if="field.visibleif" class="badge badge-secondary">Istnieje logika: {{translateLogin(field.visibleif)}}</span> <button v-on:click="selectedSurveyField = index" type="button" class="btn btn-info" data-toggle="modal" data-target="#addLogic" style="float: right;z-index: 99;position: relative;">Dodaj logikę do pola</button>
                     <div v-if="field.type == 'text'">
                         <div class="form-group">
                             <label :for="field.name">{{ field.label }}</label>

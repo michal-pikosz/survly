@@ -26,7 +26,7 @@
     <nav id="sidebar" class="sidebar-wrapper">
         <div class="sidebar-content">
             <div class="sidebar-brand">
-                <a href="#">Survly admin panel</a>
+                <a href="/admin/survey">Survly admin panel</a>
                 <div id="close-sidebar">
                     <i class="fas fa-times"></i>
                 </div>
@@ -48,6 +48,7 @@
                 </div>
             </div>
             <!-- sidebar-header  -->
+            <!--
             <div class="sidebar-search">
                 <div>
                     <div class="input-group">
@@ -60,6 +61,7 @@
                     </div>
                 </div>
             </div>
+            -->
             <!-- sidebar-search  -->
             <div class="sidebar-menu">
                 <ul>

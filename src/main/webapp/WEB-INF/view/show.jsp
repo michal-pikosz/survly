@@ -9,6 +9,7 @@
             <div class="row">
                 <div class="col-12">
                     <img style="max-height: 150px;margin: 0 auto;display: block;" class="my-4" src="/resources/logo.png">
+                    <h1>${survey.getName()}</h1>
                     <form method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <div v-for="(field, index) in fields">

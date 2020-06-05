@@ -36,7 +36,7 @@
                                         Akcje
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="/admin/survey/${i.getId()}"><i class="fas fa-eye"></i> Zobacz</a>
+                                        <a class="dropdown-item" href="/admin/survey/${i.getId()}"><i class="fas fa-eye"></i> Edytuj</a>
                                         <a class="dropdown-item" href="/admin/survey/${i.getId()}/results"><i class="fas fa-eye"></i> Wyniki</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item text-danger" href="/admin/survey/delete/${i.getId()}"><i class="fas fa-trash-alt"></i> Usuń</a>
