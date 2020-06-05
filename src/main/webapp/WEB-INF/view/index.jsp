@@ -18,7 +18,7 @@
     <div class="col-md-5 p-lg-5 mx-auto my-5">
         <h1 class="display-4 font-weight-normal">Survly! super ankiety!</h1>
         <p class="lead font-weight-normal">Dzięki tej aplikacji będziesz mógł łatwo stworzyć ankietę i zebrać opinie użytkowników!</p>
-        <a href="/survey/117" type="button" class="btn btn-primary">Przykładowa ankieta</a>
+        <a href="/survey/38" type="button" class="btn btn-primary">Przykładowa ankieta</a>
         <a href="/login" type="button" class="btn btn-info">Panel logowania</a>
     </div>
     <div class="product-device box-shadow d-none d-md-block"></div>
