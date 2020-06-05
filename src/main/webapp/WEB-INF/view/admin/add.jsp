@@ -9,7 +9,7 @@
             <h2>Dodawanie nowej ankiety</h2>
             <!-- Button trigger modal -->
             <div class="actions mt-3">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addField"><i class="fa fa-bars"></i> Dodaj nowe pole</button>
+                <button type="button" class="btn btn-primary" v-on:click="openNewField()"><i class="fa fa-bars"></i> Dodaj nowe pole</button>
                 <button type="button" class="btn btn-success" v-on:click="save()"><i class="fa fa-save"></i> Zapisz</button>
             </div>
             <hr>
@@ -17,9 +17,8 @@
             <div>
                 <p v-if="fields.length === 0">Brak pól w ankiecie, skorzystaj z przycisku "Dodaj nowe pole".</p>
                 <div class="my-3" v-for="(field, index) in fields">
-                    <button type="button" class="close" aria-label="Close" v-on:click="deleteElement(index)">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="close deleteField" v-on:click="deleteElement(index)"><i class="fas fa-trash-alt"></i></button>
+                    <button type="button" class="close editField" v-on:click="editElement(index)"><i class="fas fa-edit"></i></button>
                     <span v-if="field.visibleif" class="badge badge-secondary">Istnieje logika: {{translateLogin(field.visibleif)}}</span> <button v-on:click="selectedSurveyField = index" type="button" class="btn btn-info" data-toggle="modal" data-target="#addLogic" style="float: right;z-index: 99;position: relative;">Dodaj logikę do pola</button>
                     <div v-if="field.type == 'text'">
                         <div class="form-group">
