@@ -12,28 +12,57 @@ var app = new Vue({
         fieldLabel: null,
         fieldOptions: "",
         selectedSurveyField: "",
+        editedField: "",
         surveyFieldSelect: "",
         surveyFieldOperator: "",
         surveyFieldValue: [],
         fields: []
     },
     methods: {
-        onSubmit() {
-            let newField = {
-                "type": this.fieldType,
-                "label": this.fieldLabel,
-                "name": "pole" + new Date().valueOf(),
-                "value": []
-            };
-
-            if (this.fieldOptions !== "") {
-                newField.options = this.fieldOptions.split('\n').filter(x => x);
-            }
-
-            this.fields.push(newField);
+        openNewField() {
             this.fieldType = null;
             this.fieldLabel = null;
-            this.issaved = true;
+            this.editedField = "";
+            $('#addField').modal('show');
+        },
+        onSubmit() {
+            if(this.editedField === "") {
+
+                let newField = {
+                    "type": this.fieldType,
+                    "label": this.fieldLabel,
+                    "name": "pole" + new Date().valueOf(),
+                    "value": []
+                };
+
+                if (this.fieldOptions !== "") {
+                    newField.options = this.fieldOptions.split('\n').filter(x => x);
+                }
+
+                this.fields.push(newField);
+                this.fieldType = null;
+                this.fieldLabel = null;
+                this.issaved = true;
+
+            } else {
+
+                this.fields[this.editedField] = {
+                    "type": this.fieldType,
+                    "label": this.fieldLabel,
+                    "name": this.fields[this.editedField].name,
+                    "value": []
+                };
+
+                if (this.fieldOptions !== "") {
+                    this.fields[this.editedField].options = this.fieldOptions.split('\n').filter(x => x);
+                }
+
+                this.fieldType = null;
+                this.fieldLabel = null;
+                this.fieldOptions = "";
+                this.issaved = true;
+            }
+
             $('#addField').modal('hide');
         },
         onSubmitLogic() {
@@ -46,6 +75,15 @@ var app = new Vue({
             this.surveyFieldOperator = "";
             this.surveyFieldValue = [];
             $('#addLogic').modal('hide');
+        },
+        editElement(id) {
+            this.editedField = id;
+            this.fieldType = this.fields[id].type;
+            this.fieldLabel = this.fields[id].label;
+            if(this.fields[id].options) {
+                setTimeout(() => {this.fieldOptions = this.fields[id].options.join("\n")}, 0);
+            }
+            $('#addField').modal('show');
         },
         deleteElement(id) {
             this.fields.splice(id, 1);

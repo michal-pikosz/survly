@@ -486,3 +486,12 @@ button.close {
     float: none;
     color: red;
 }
+.deleteField i {
+    font-size: 18px !important;
+    color: red !important;
+}
+
+.editField i {
+    font-size: 20px !important;
+    color: green !important;
+}
