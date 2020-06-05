@@ -101,6 +101,37 @@ var app = new Vue({
                 confirmButtonText: 'Oki doki!'
             }).then((result) => callback());
         },
+        translateLogin(logic) {
+            let syntax = logic.split(" ");
+            let fieldToCheck = syntax[0]; // pole np "0"
+            let operator = syntax[1]; // empty, notempty, =, <>, contains, notcontains
+            let value = "";
+
+            if (syntax[2]) {
+                value = syntax[2];
+            }
+
+            switch (operator) {
+                case "empty":
+                    return "pole o nazwie \"" + this.fields[fieldToCheck].label + "\" musi być puste";
+                    break;
+                case "notempty":
+                    return "pole o nazwie \"" + this.fields[fieldToCheck].label + "\" nie może być puste";
+                    break;
+                case "=":
+                    return "pole o nazwie \"" + this.fields[fieldToCheck].label + "\" musi być równe " + value;
+                    break;
+                case "<>":
+                    return "pole o nazwie \"" + this.fields[fieldToCheck].label + "\" nie może być równe " + value;
+                    break;
+                case "contains":
+                    return "pole o nazwie \"" + this.fields[fieldToCheck].label + "\" nie musi zawierać " + value;
+                    break;
+                case "notcontains":
+                    return "pole o nazwie \"" + this.fields[fieldToCheck].label + "\" nie może zawierać " + value;
+                    break;
+            }
+        }
     },
     watch: {
         fieldType: function () {

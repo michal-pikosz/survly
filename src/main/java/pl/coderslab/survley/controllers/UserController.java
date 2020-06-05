@@ -1,6 +1,8 @@
 package pl.coderslab.survley.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -53,6 +55,13 @@ public class UserController {
         if (logout != null)
             model.addAttribute("message", "Zostałeś pomyślnie wylogowany");
 
+        if (UserController.isLogged()) return "redirect:/admin/survey";
+
         return "login";
+    }
+
+    public static boolean isLogged() {
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return null != authentication && !("anonymousUser").equals(authentication.getName());
     }
 }

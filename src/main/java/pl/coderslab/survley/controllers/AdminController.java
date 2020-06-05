@@ -22,9 +22,7 @@ import pl.coderslab.survley.dao.SurveyDao;
 import pl.coderslab.survley.entites.Survey;
 import pl.coderslab.survley.repository.UserRepository;
 import pl.coderslab.survley.validator.UserValidator;
-
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -58,6 +56,7 @@ public class AdminController {
     public String index(Model model, @RequestParam(required = false, defaultValue="0") String page, @RequestParam(required = false, defaultValue="10") String size) {
         Pageable firstPageWithTwoElements = PageRequest.of(Integer.parseInt(page), Integer.parseInt(size));
         Page<Survey> all = this.surveyRepository.findAll(firstPageWithTwoElements);
+
         model.addAttribute("Survey", all.getContent());
         model.addAttribute("number", all.getNumber());
         model.addAttribute("totalPages", all.getTotalPages());
@@ -123,8 +122,6 @@ public class AdminController {
                 .map(SurveyFields::getName)
                 .distinct()
                 .collect(toList());
-
-
 
         model.addAttribute("ids", ids);
         model.addAttribute("tableHeader", tableHeader);
