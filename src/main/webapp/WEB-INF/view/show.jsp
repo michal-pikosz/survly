@@ -5,12 +5,13 @@
 <t:front>
     <jsp:body>
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <div class="container" id="app">
             <div class="row">
                 <div class="col-12">
                     <img style="max-height: 150px;margin: 0 auto;display: block;" class="my-4" src="/resources/logo.png">
                     <h1>${survey.getName()}</h1>
-                    <form method="post">
+                    <form id="survey" method="post" style="padding-bottom: 150px;">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <div v-for="(field, index) in fields">
                             <div v-show="validate(field, index)">
@@ -32,11 +33,13 @@
                                     </div>
                                 </div>
                                 <div v-if="field.type == 'radio'">
-                                    <label class="form-check-label" :for="field.name">{{field.label}}</label>
-                                    <div class="form-group">
-                                        <div class="form-check" v-if="field.options" v-for="(option, index) in field.options">
-                                            <input v-model="field.value" :value="index" class="form-check-input" type="radio" :name="field.name" :id="field.name">
-                                            <label class="form-check-label" :for="field.name">{{option}}</label>
+                                    <div class="form-group form-check" style="padding-left: 0;">
+                                        <label class="form-check-label" :for="field.name">{{field.label}}</label>
+                                        <div class="form-group">
+                                            <div class="form-check" v-if="field.options" v-for="(option, index) in field.options">
+                                                <input v-model="field.value" :value="index" class="form-check-input" type="radio" :name="field.name" :id="field.name">
+                                                <label class="form-check-label" :for="field.name">{{option}}</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -54,77 +57,6 @@
                     id: "",
                     name: "",
                     fields: ${survey.getFields()}
-                        // {
-                        //     "type": "text",
-                        //     "label": "Pole 0",
-                        //     "name": "pole1",
-                        //     "value": ""
-                        // },
-                        // {
-                        //     "type": "checkbox",
-                        //     "label": "Pole 0 empty",
-                        //     "name": "pole1",
-                        //     "visibleif": "0 empty",
-                        //     "value": [],
-                        //     "options": [
-                        //         "opcja1",
-                        //         "opcja2",
-                        //         "opcja3"
-                        //     ]
-                        // },
-                        // {
-                        //     "type": "text",
-                        //     "label": "Pole 0 notempty",
-                        //     "visibleif": "0 notempty",
-                        //     "name": "pole2",
-                        //     "value": ""
-                        // },
-                        // {
-                        //     "type": "text",
-                        //     "label": "Pole 0 równa się (=) pupa",
-                        //     "visibleif": "0 = pupa",
-                        //     "name": "pole2",
-                        //     "value": ""
-                        // },
-                        // {
-                        //     "type": "text",
-                        //     "label": "Pole 0 nie równa się (!==) pupa",
-                        //     "visibleif": "0 <> pupa",
-                        //     "name": "pole2",
-                        //     "value": ""
-                        // },
-                        // {
-                        //     "type": "text",
-                        //     "label": "Pole 0 nie zawiera (includes) pupa",
-                        //     "visibleif": "0 contains pupa",
-                        //     "name": "pole2",
-                        //     "value": ""
-                        // },
-                        // {
-                        //     "type": "text",
-                        //     "label": "Pole 0 nie zawiera (includes) pupa",
-                        //     "visibleif": "0 notcontains pupa",
-                        //     "name": "pole2",
-                        //     "value": ""
-                        // },
-                        // {
-                        //     "type": "text",
-                        //     "label": "Pole 1 równa się (includes) 0,1",
-                        //     "visibleif": "1 = 0,1",
-                        //     "name": "pole2",
-                        //     "value": ""
-                        // },
-                        // {
-                        //     "type": "radio",
-                        //     "label": "Pole radio",
-                        //     "name": "pole3",
-                        //     "value": "",
-                        //     "options": [
-                        //         "opcja1",
-                        //         "opcja2",
-                        //         "opcja3"
-                        //     ]
-                        // }
                 },
                 methods: {
                     validate(field, index) {
@@ -141,22 +73,22 @@
 
                             switch (operator) {
                                 case "empty":
-                                    if(this.fields[fieldToCheck].value.toString() !== "") return false;
+                                    if (this.fields[fieldToCheck].value.toString() !== "") return false;
                                     break;
                                 case "notempty":
-                                    if(this.fields[fieldToCheck].value.toString() === "") return false;
+                                    if (this.fields[fieldToCheck].value.toString() === "") return false;
                                     break;
                                 case "=":
-                                    if(this.fields[fieldToCheck].value.toString() !== value) return false;
+                                    if (this.fields[fieldToCheck].value.toString() !== value) return false;
                                     break;
                                 case "<>":
-                                    if(this.fields[fieldToCheck].value.toString() === value) return false;
+                                    if (this.fields[fieldToCheck].value.toString() === value) return false;
                                     break;
                                 case "contains":
-                                    if(!this.fields[fieldToCheck].value.toString().includes(value)) return false;
+                                    if (!this.fields[fieldToCheck].value.toString().includes(value)) return false;
                                     break;
                                 case "notcontains":
-                                    if(this.fields[fieldToCheck].value.toString().includes(value)) return false;
+                                    if (this.fields[fieldToCheck].value.toString().includes(value)) return false;
                                     break;
                             }
                         }
@@ -165,6 +97,23 @@
                 }
             });
         </script>
+
+
+        <script>
+            $("form").submit(function(event){
+                let list = [...new Set(document.querySelectorAll("input[type=checkbox]:checked"))];
+                list.forEach((e) => {
+                    let checked = Array.from(document.querySelectorAll('[name='+ e.name +']:checked'));
+                    e.value = checked.map(el => el.value);
+                })
+            });
+        </script>
+
+        <style>
+            .form-group > label {
+                font-weight: bold;
+            }
+        </style>
     </jsp:body>
 </t:front>
 
